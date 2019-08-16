@@ -2,7 +2,7 @@ var axios = require("axios");
 let args = process.argv;
 var action = args[2];
 var queryUrl = "";
-
+var BITURL = "";
 
 
 switch(action) {
@@ -107,7 +107,7 @@ switch(action) {
       break;
     case "BIT":
         //bands in town
-        var bandsintown = require('bandsintown')(APP_ID);
+        var bandsintown = require('bandsintown')("8134bf6d02ff01557602cbde7aefb01a");
         var bandName = "";
           var bandNameArr =[];
           for (var i = 3; i < args.length; i++) {
@@ -116,13 +116,43 @@ switch(action) {
               }  
               
           }
-          bandName = bandNameArr.join('+');
-
-        bandsintown
-          .getArtistEventList(bandName)
-          .then(function(events) {
+          bandName = bandNameArr.join('%20');
+          //https://rest.bandsintown.com/artists/Breaking%20Benjamin/events?app_id=8134bf6d02ff01557602cbde7aefb01a&date=upcoming
+          BITURL = "https://rest.bandsintown.com/artists/"+bandName+"/events?app_id=8134bf6d02ff01557602cbde7aefb01a&date=upcoming"
+        // bandsintown
+        //   .getArtistEventList(bandName)
+        axios.get(BITURL)
+        .then(function(events) {
             // return array of events
-            console.log(events);
+            // console.log(events.data);
+            console.log(bandNameArr.join(' '));
+            for (var i = 0; i < events.data.length; i++) {
+              console.log(i+"------------------------------");
+              console.log(events.data[i].venue.name);
+              console.log(events.data[i].venue.city+" "+events.data[i].venue.region);
+              console.log("Lineup:: "+events.data[i].lineup);
+              console.log("Get Tickets Here:: "+events.data[i].offers[0].url);
+            } 
+          })
+          .catch(function(errs) {
+            if (errs.response) {
+              // The request was made and the server responded with a status code
+              // that falls out of the range of 2xx
+              console.log("---------------Data---------------");
+              console.log(errs.response.data);
+              console.log("---------------Status---------------");
+              console.log(errs.response.status);
+              console.log("---------------Status---------------");
+              console.log(errs.response.headers);
+            } else if (errs.request) {
+              // The request was made but no response was received
+              // `error.request` is an object that comes back with details pertaining to the error that occurred.
+              console.log(errs.request);
+            } else {
+              // Something happened in setting up the request that triggered an Error
+              console.log("Error", errs.message);
+            }
+            console.log(errs.config);
           });
       // code block      
       break;
