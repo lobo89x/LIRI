@@ -8,7 +8,7 @@ var BITURL = "";
 switch(action) {
     case "OMDB":
       //omdb
-      var movieName = "";
+      var movieName = "movie-this";
       var movieNameArr =[];
       for (var i = 3; i < args.length; i++) {
           if (args[i]!=process.argv[0]&&args[i]!=process.argv[1]){
@@ -52,7 +52,7 @@ switch(action) {
 
 
       break;
-      case "Spotify":
+      case "spotify-this-song":
           //spotify  
           var Spotify = require('node-spotify-api');
           var songName = "";
@@ -105,7 +105,7 @@ switch(action) {
           });
       // code block      
       break;
-    case "BIT":
+    case "concert-this":
         //bands in town
         var bandsintown = require('bandsintown')("8134bf6d02ff01557602cbde7aefb01a");
         var bandName = "";
