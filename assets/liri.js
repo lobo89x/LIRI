@@ -1,3 +1,5 @@
+require("dotenv").config();
+var keys = require("./keys.js");
 var axios = require("axios");
 let args = process.argv;
 var action = args[2];
@@ -6,9 +8,9 @@ var BITURL = "";
 
 
 switch(action) {
-    case "OMDB":
+    case "movie-this":
       //omdb
-      var movieName = "movie-this";
+      var movieName = "";
       var movieNameArr =[];
       for (var i = 3; i < args.length; i++) {
           if (args[i]!=process.argv[0]&&args[i]!=process.argv[1]){
@@ -16,8 +18,12 @@ switch(action) {
           }  
           
       }
+      var OMDBId = keys.OMDBId;
       movieName = movieNameArr.join('+');
-      queryUrl = "http://www.omdbapi.com/?t="+movieName+"&y=&plot=short&apikey=trilogy"; 
+      if (movieName===""){
+        movieName = "Mr. Nobody";
+      }
+      queryUrl = "http://www.omdbapi.com/?t="+movieName+"&y=&plot=short&apikey="+OMDBId; 
       
       axios.get(queryUrl).then(
         function(response) {
@@ -65,11 +71,9 @@ switch(action) {
           }
           songName = songNameArr.join('%20');
           //console.log(songName);
-
-          var spotify = new Spotify({
-            id: "8383b559f4234593a24a1fff7d0d6c8f",
-            secret: "3bad15103767434f900b2a429931480e"
-          });
+          //console.log(keys.spotify);
+          var spotify = new Spotify(keys.spotify);
+          
           
           spotify
           //.search({ type: 'track', query: songName })
@@ -107,7 +111,8 @@ switch(action) {
       break;
     case "concert-this":
         //bands in town
-        var bandsintown = require('bandsintown')("8134bf6d02ff01557602cbde7aefb01a");
+        var BITId = keys.BITId;
+        var bandsintown = require('bandsintown')(BITId);
         var bandName = "";
           var bandNameArr =[];
           for (var i = 3; i < args.length; i++) {
@@ -118,7 +123,7 @@ switch(action) {
           }
           bandName = bandNameArr.join('%20');
           //https://rest.bandsintown.com/artists/Breaking%20Benjamin/events?app_id=8134bf6d02ff01557602cbde7aefb01a&date=upcoming
-          BITURL = "https://rest.bandsintown.com/artists/"+bandName+"/events?app_id=8134bf6d02ff01557602cbde7aefb01a&date=upcoming"
+          BITURL = "https://rest.bandsintown.com/artists/"+bandName+"/events?app_id="+BITId+"&date=upcoming";
         // bandsintown
         //   .getArtistEventList(bandName)
         axios.get(BITURL)
@@ -155,6 +160,7 @@ switch(action) {
             console.log(errs.config);
           });
       // code block      
+      case "do-what-it-says":
       break;
   }    
 
