@@ -3,7 +3,8 @@ _Language_ Interpretation and Recognition Interface
 
 
 
-In this assignment, you will make LIRI. LIRI is like iPhone's SIRI. However, while SIRI is a Speech Interpretation and Recognition Interface, LIRI is a _Language_ Interpretation and Recognition Interface. LIRI will be a command line node app that takes in parameters and gives you back data.
+LIRI stands for _Language_ Interpretation and Recognition Interface. LIRI is like SIRI or Alexa, without a front end. LIRI is a command line Node app that takes in parameters and gives you back data.
+
 
 
 https://media.giphy.com/media/iH6iBNCr3gb5bivwlO/giphy.gif
